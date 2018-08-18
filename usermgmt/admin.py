@@ -1,14 +1,14 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 from django.contrib import admin
-from django.contrib.auth import get_user_model
+
+# Register your models here.
 from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import Group
 
-from .forms import UserCategory, UserChangeForm
-from .models import Users
+from usermgmt.models import Users
 
-class CustomUser(UserAdmin):
-    add_form = UserCategory
-    form = UserChangeForm
-    model = Users
-    list_display = ['id','name', 'description']
+admin.site.register(Users, UserAdmin)
 
-admin.site.register(Users, CustomUser)
+admin.site.unregister(Group)
