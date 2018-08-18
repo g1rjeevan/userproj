@@ -1,26 +1,25 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.contrib.auth.decorators import login_required
-from django.http import Http404
-
-# Create your views here.
-from requests import Response
-from rest_framework.views import APIView
-from usermgmt.models import Users
-from rest_framework import status
-from usermgmt.serializers import UserSerializer
 from django.contrib.auth import authenticate
+from django.http import Http404
 from django.views.decorators.csrf import csrf_exempt
+
+from requests import Response
+from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
 from rest_framework.status import (
     HTTP_400_BAD_REQUEST,
     HTTP_404_NOT_FOUND,
     HTTP_200_OK
 )
-from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from usermgmt.models import Users
+from usermgmt.serializers import UserSerializer
 
 
 @authentication_classes([])
@@ -71,7 +70,6 @@ class UserDetail(APIView):
 @api_view(["POST"])
 @permission_classes((AllowAny,))
 def login(request):
-
     username = request.data.get("username")
     password = request.data.get("password")
     if username is None or password is None:

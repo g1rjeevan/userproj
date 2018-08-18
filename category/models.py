@@ -2,15 +2,17 @@
 from __future__ import unicode_literals
 
 import datetime
-
 import os
+
 from django.db import models
+
 
 # Create your models here.
 def user_directory_path(instance, filename):
     ext = filename.split('.')[-1]
     filename = "%s.%s" % (datetime.datetime.now(), ext)
     return os.path.join('IMAGE/', filename)
+
 
 class Category(models.Model):
     id = models.AutoField(primary_key=True)
@@ -23,4 +25,4 @@ class Category(models.Model):
     users = models.ForeignKey('usermgmt.Users', related_name='categories', on_delete=models.CASCADE, null=False)
 
     class Meta:
-        ordering = ('id','name','is_featured',)
+        ordering = ('id', 'name', 'is_featured',)

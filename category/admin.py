@@ -8,6 +8,7 @@ from category.models import Category
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ( 'id','name','parent','is_featured', 'is_active','description','users')
+    list_display = ('id', 'name', 'parent', 'is_featured', 'is_active', 'description', 'users')
+
 
 admin.site.register(Category, CategoryAdmin)

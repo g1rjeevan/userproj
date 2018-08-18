@@ -1,22 +1,15 @@
-from django.contrib.auth import authenticate
-from django.contrib.auth.decorators import login_required
 from django.http import Http404
-from django.views.decorators.csrf import csrf_exempt
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework import status, generics
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
-from rest_framework.permissions import IsAuthenticated, AllowAny
-from rest_framework.utils import json
+from rest_framework.filters import OrderingFilter
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from category.models import Category
-from rest_framework import status, generics
-from rest_framework.response import Response
-
 from category.serializers import CategorySerializer
 from usermgmt.models import Users
-
-from rest_framework.filters import OrderingFilter
 
 
 @authentication_classes([])
@@ -25,7 +18,7 @@ class CategoryFilterList(generics.ListAPIView):
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
     filter_backends = (OrderingFilter,)
-    ordering_fields = ('name', 'id', 'is_active','users')
+    ordering_fields = ('name', 'id', 'is_active', 'users')
 
 
 @authentication_classes([])
@@ -39,11 +32,11 @@ class CategoryList(APIView):
     def post(self, request, format=None):
         print ("Coming Here")
         users = Users.objects.get(id=request.data['users_id'])
-        request.data['users']=users
+        request.data['users'] = users
         print request.data
-        serializer = Category(id=request.data['id'],name=request.data['name'],parent=request.data['parent'],
-                            is_featured=request.data['is_featured'],is_active=request.data['is_active'],
-                              description=request.data['description'],users=request.data['users'])
+        serializer = Category(id=request.data['id'], name=request.data['name'], parent=request.data['parent'],
+                              is_featured=request.data['is_featured'], is_active=request.data['is_active'],
+                              description=request.data['description'], users=request.data['users'])
         if serializer:
             serializer.save()
             return Response("Added", status=status.HTTP_201_CREATED)
@@ -77,16 +70,17 @@ class CategoryDetail(APIView):
         person.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 @api_view(['GET'])
 @permission_classes((AllowAny,))
-def get_search(request,param):
+def get_search(request, param):
     data = Category.objects.all().values(str(param)).order_by(str(param))
 
     try:
-        auth_token,_ = Token.objects.get_or_create(user=request.user)
-        if(request.user.is_authenticated):
+        auth_token, _ = Token.objects.get_or_create(user=request.user)
+        if (request.user.is_authenticated):
             status = True
     except:
-        return Response({"data": data,'auth_status': False})
+        return Response({"data": data, 'auth_status': False})
 
     return Response({"data": data, 'auth_token': auth_token.key, 'auth_status': status})

@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from rest_framework.urlpatterns import format_suffix_patterns
+
 from category import views
 from category.views import get_search
 
@@ -9,4 +9,3 @@ urlpatterns = [
     url(r'^categories/(?P<pk>[\w\-]+)/$', views.CategoryDetail.as_view(), name='category-detail'),
     url(r'^(?P<param>[-\w]+)/$', get_search, name='Get Results'),
 ]
-
