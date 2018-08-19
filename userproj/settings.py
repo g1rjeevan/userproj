@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'category',
     'usermgmt',
+    'payments'
 ]
 
 AUTH_USER_MODEL = 'usermgmt.Users'

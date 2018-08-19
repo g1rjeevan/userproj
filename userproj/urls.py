@@ -25,4 +25,5 @@ urlpatterns = [
     url(r'^$', views.api_root),
     url(r'^', include('usermgmt.urls', namespace='users')),
     url(r'^', include('category.urls', namespace='categories')),
+    url(r'^', include('payments.urls', namespace='payments')),
 ]
