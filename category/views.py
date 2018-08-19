@@ -30,10 +30,8 @@ class CategoryList(APIView):
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        print ("Coming Here")
         users = Users.objects.get(id=request.data['users_id'])
         request.data['users'] = users
-        print request.data
         serializer = Category(id=request.data['id'], name=request.data['name'], parent=request.data['parent'],
                               is_featured=request.data['is_featured'], is_active=request.data['is_active'],
                               description=request.data['description'], users=request.data['users'])
